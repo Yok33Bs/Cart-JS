@@ -5,11 +5,17 @@ let carrito = [];
 
 cargarEventListeners();
 function cargarEventListeners(){
+    
+    document.addEventListener('DOMContentLoaded',()=>{
+        JSON.parse(localStorage.getItem('carrito'))
+    })
     agregarCarrito.forEach(curso=>curso.addEventListener('click', agregarCurso));
+    
     vaciarCarrito.addEventListener('click', ()=>{
         carrito=[];
         limpiarCarrito()
-    })
+    });
+
 };
 
 function agregarCurso(e){
@@ -42,9 +48,13 @@ function obtenerInfoCurso(card){
         carrito.push(info);
     }
     
+    setStorage('carrito', carrito);
     mostrarEnCarrito()
 }
 
+function setStorage (key, array) {
+    localStorage.setItem(key,JSON.stringify(array));
+}
 function mostrarEnCarrito() {
     
     limpiarCarrito();
@@ -84,5 +94,6 @@ function limpiarCarrito(){
 
 function eliminarCurso(e){
     carrito = carrito.filter(curso => curso.id !== e.dataset.id)
+    setStorage('carrito', carrito)
     mostrarEnCarrito()
 }
